@@ -15,19 +15,34 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { defaultValues } from "@/constants"
+import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
 import { CustomField } from "./CustomField"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useState } from "react"
+import { AspectRatioKey } from "@/lib/utils"
+
 
 export const formSchema = z.object({
   title: z.string(),
-  aspectRatios: z.string().optional(),
+  aspectRatio: z.string().optional(),
   color: z.string().optional(),
   prompt: z.string().optional(),
   publicId: z.string(),
 })
 
 
-const TransformationForm = ({ action, data = null }: TransformationFormProps) => {
+const TransformationForm = ({ action, data = null, userId, type, creditBalance }: TransformationFormProps) => {
+
+  const transformationType = transformationTypes[type]
+
+  const [image, setImage] = useState(data)
+  const [newTransformation, setNewTransformation] = useState<Transformations | null>(null)
 
     const initialValues = data && action === "Update" ? {
       title: data?.title,
@@ -50,6 +65,10 @@ const TransformationForm = ({ action, data = null }: TransformationFormProps) =>
     console.log(values)
   }
 
+  const onSelectFieldHandler = (value: string, onChange: (value: string) => void) => {
+
+  }
+
 
   return (
     <Form {...form}>
@@ -61,7 +80,34 @@ const TransformationForm = ({ action, data = null }: TransformationFormProps) =>
           className="w-full"
           render={({ field }) => <Input {...field} className="input-field" />}
         />
-        <Button type="submit">Submit</Button>
+
+        {type === 'fill' && (
+          <CustomField
+            control={form.control}
+            name="aspectRatio"
+            formLabel="Aspect Ratio"
+            className="w-full"
+            render={({ field }) => (
+              <Select
+              onValueChange={(value) => onSelectFieldHandler(value, field.onChange)}
+              value={field.value}
+              >
+                <SelectTrigger className="select-field">
+                  <SelectValue placeholder="Select size" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(aspectRatioOptions).map((key) => (
+                    <SelectItem key={key} value={key} className="select-item">
+                      {aspectRatioOptions[key as AspectRatioKey].label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        )}
+
+
       </form>
     </Form>
   )
