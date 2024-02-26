@@ -6,12 +6,17 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 const AddTransformationTypePage = async ({ params: { type } }: SearchParamProps) => {
-  const { userId } : { userId: string | null } = auth();
+   const { userId } : { userId: string | null } = auth();
 
   const transformation = transformationTypes[type];
 
-  if(!userId) redirect('/')
+  //-------------------------
+  //issue authenticated user because Chrome is blockinng 3rd party requests - need to find a way to authenticate clerk user without using 3rd party cookies
 
+  //this issue is only happening in development everything is working fine in production
+ //-----------------------------
+
+  if(!userId) redirect('/sign-in')
   const user = await getUserById(userId);
 
 
