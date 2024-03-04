@@ -72,7 +72,7 @@ return (
                                 height={getImageSize(type, image, "height")}
                                 src={publicId}
                                 alt="image"
-                                size="(max-width: 767px) 100vw, 50vw"
+                                //size="(max-width: 767px) 100vw, 50vw"
                                 placeholder={dataUrl as PlaceholderValue}
                                 className="media-uploader_cldImage"
                             />
