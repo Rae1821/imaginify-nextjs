@@ -44,7 +44,7 @@ export const formSchema = z.object({
 
 // const TransformationForm = ({ action, data = null, userId, type, creditBalance }: TransformationFormProps) => {
 
-const TransformationForm = ({ action, data = null, userId, type, config = null }: TransformationFormProps) => {
+const TransformationForm = ({ action, data = null, userId, type, config = null, creditBalance }: TransformationFormProps) => {
 
   const transformationType = transformationTypes[type]
 
